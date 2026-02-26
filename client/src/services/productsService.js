@@ -49,3 +49,28 @@ export const getCategories = async () => {
   const res = await api.get('/categories');
   return res.data;
 };
+
+// ─── Product Image Management ─────────────────────────────────────────────────
+export const getProductImages = async (productId) => {
+  const res = await api.get(`/products/${productId}/images`);
+  return res.data;
+};
+
+export const uploadProductImage = async (productId, file, altText = '') => {
+  const formData = new FormData();
+  formData.append('image', file);
+  formData.append('alt_text', altText);
+  const res = await api.post(`/products/${productId}/images`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return res.data;
+};
+
+export const setPrimaryImage = async (productId, imageId) => {
+  const res = await api.patch(`/products/${productId}/images/${imageId}/primary`);
+  return res.data;
+};
+
+export const deleteProductImage = async (productId, imageId) => {
+  await api.delete(`/products/${productId}/images/${imageId}`);
+};

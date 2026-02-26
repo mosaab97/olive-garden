@@ -25,3 +25,35 @@ exports.remove = asyncHandler(async (req, res) => {
   await productsService.remove(req.params.id);
   res.status(204).send();
 });
+
+// ─── Image management ─────────────────────────────────────────────────────────
+const uploadService = require('../services/uploadService');
+
+exports.getImages = asyncHandler(async (req, res) => {
+  const images = await productsService.getImages(req.params.id);
+  res.json(images);
+});
+
+exports.uploadImage = asyncHandler(async (req, res) => {
+  // 1. Upload file to Cloudinary
+  const { url, public_id } = await uploadService.uploadImage(req.file);
+  // 2. Save record to DB
+  const image = await productsService.addImage(req.params.id, {
+    url,
+    public_id,
+    alt_text: req.body.alt_text || '',
+  });
+  res.status(201).json(image);
+});
+
+exports.setPrimaryImage = asyncHandler(async (req, res) => {
+  const image = await productsService.setPrimary(req.params.id, req.params.imageId);
+  res.json(image);
+});
+
+exports.deleteImage = asyncHandler(async (req, res) => {
+  const deleted = await productsService.deleteImage(req.params.id, req.params.imageId);
+  // Delete from Cloudinary after DB delete succeeds
+  await uploadService.deleteImage(deleted.public_id);
+  res.status(204).send();
+});

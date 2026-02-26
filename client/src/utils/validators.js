@@ -49,3 +49,20 @@ export const variantSchema = Yup.object({
   stock_qty: Yup.number().min(0).required('Stock quantity is required'),
   weight_lbs: Yup.number().positive('Must be positive').nullable(),
 });
+
+export const updateProfileSchema = Yup.object({
+  first_name: Yup.string().required('First name is required'),
+  last_name:  Yup.string().required('Last name is required'),
+  phone: Yup.string()
+    .matches(/^\d{10}$/, 'Enter a valid 10-digit phone number')
+    .nullable()
+    .transform((v) => v === '' ? null : v),
+});
+
+export const changePasswordSchema = Yup.object({
+  current_password: Yup.string().required('Current password is required'),
+  new_password:     Yup.string().min(6, 'At least 6 characters').required('New password is required'),
+  confirm_password: Yup.string()
+    .oneOf([Yup.ref('new_password')], 'Passwords must match')
+    .required('Please confirm your new password'),
+});

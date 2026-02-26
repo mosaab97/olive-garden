@@ -47,3 +47,51 @@ exports.remove = async (id) => {
   const { rowCount } = await db.query(deactivateProduct, [id]);
   if (!rowCount) throw new ApiError(404, 'Product not found');
 };
+
+// ─── Product Image Management ─────────────────────────────────────────────────
+const getProductImages  = loadQuery('products', 'getProductImages');
+const addProductImage   = loadQuery('products', 'addProductImage');
+const setPrimaryImage   = loadQuery('products', 'setPrimaryImage');
+const deleteProductImage = loadQuery('products', 'deleteProductImage');
+
+exports.getImages = async (productId) => {
+  const { rows } = await db.query(getProductImages, [productId]);
+  return rows;
+};
+
+exports.addImage = async (productId, { url, public_id, alt_text }) => {
+  // First image added becomes primary automatically
+  const { rows: existing } = await db.query(getProductImages, [productId]);
+  const isPrimary  = existing.length === 0;
+  const sortOrder  = existing.length;
+
+  const { rows } = await db.query(addProductImage, [
+    productId, url, alt_text || '', isPrimary, sortOrder, public_id,
+  ]);
+  return rows[0];
+};
+
+exports.setPrimary = async (productId, imageId) => {
+  const { rows } = await db.query(setPrimaryImage, [productId, imageId]);
+  if (!rows[0]) throw new ApiError(404, 'Image not found');
+  return rows[0];
+};
+
+exports.deleteImage = async (productId, imageId) => {
+  const { rows } = await db.query(deleteProductImage, [imageId, productId]);
+  if (!rows[0]) throw new ApiError(404, 'Image not found');
+
+  // If the deleted image was primary, promote the next image
+  if (rows[0].is_primary) {
+    await db.query(
+      `UPDATE product_images
+       SET is_primary = TRUE
+       WHERE product_id = $1
+       ORDER BY sort_order ASC, id ASC
+       LIMIT 1`,
+      [productId]
+    );
+  }
+
+  return rows[0]; // caller uses public_id to delete from Cloudinary
+};

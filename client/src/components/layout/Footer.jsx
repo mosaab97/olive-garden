@@ -4,7 +4,7 @@ const Footer = () => (
   <footer className="bg-olive-900 text-olive-200 mt-auto">
     <div className="max-w-6xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
       <div>
-        <p className="font-serif text-xl text-white mb-2">Olive  Garden</p>
+        <p className="font-serif text-xl text-white mb-2">Zaytonna</p>
         <p className="text-sm text-olive-400">
           Premium stuffed olives crafted with care. Shipped across Illinois and the Midwest.
         </p>
@@ -26,7 +26,7 @@ const Footer = () => (
       </div>
     </div>
     <div className="border-t border-olive-700 text-center py-4 text-xs text-olive-500">
-      © {new Date().getFullYear()} Olive  Garden All rights reserved.
+      © {new Date().getFullYear()} Zaytonna All rights reserved.
     </div>
   </footer>
 );

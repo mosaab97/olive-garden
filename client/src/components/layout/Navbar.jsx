@@ -12,7 +12,7 @@ const Navbar = () => {
 
         {/* Logo */}
         <Link to="/" className="font-serif text-2xl text-olive-700 tracking-tight">
-          Olive <span className="text-earth-500"></span> Garden
+          Zaytonna
         </Link>
 
         {/* Nav links */}

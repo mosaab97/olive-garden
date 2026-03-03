@@ -15,7 +15,7 @@ const AdminLayout = ({ children }) => {
       {/* Sidebar */}
       <aside className="w-56 bg-olive-900 text-olive-200 flex flex-col">
         <div className="px-6 py-5 border-b border-olive-700">
-          <p className="font-serif text-lg text-white">Olive  Garden</p>
+          <p className="font-serif text-lg text-white">Zaytonna</p>
           <p className="text-xs text-olive-400 mt-0.5">Admin Panel</p>
         </div>
         <nav className="flex-1 px-3 py-4 space-y-1">

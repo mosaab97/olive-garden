@@ -78,7 +78,7 @@ const OrdersTab = () => {
           </div>
           <div className="flex justify-between items-center mt-4 pt-3 border-t border-cream-200">
             <span className="font-semibold text-olive-800">{formatCurrency(order.total)}</span>
-            <Link to={`/order-confirmation/${order.id}`} className="text-sm text-olive-600 hover:underline">
+            <Link to={`/orders/${order.id}`} className="text-sm text-olive-600 hover:underline">
               View details →
             </Link>
           </div>

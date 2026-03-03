@@ -24,3 +24,13 @@ export const updateStatus = async (id, status) => {
   const res = await api.put(`/orders/${id}/status`, { status });
   return res.data;
 };
+
+export const cancelOrder = async (id) => {
+  const res = await api.patch(`/orders/${id}/cancel`);
+  return res.data;
+};
+
+export const addTracking = async (id, tracking_number) => {
+  const res = await api.patch(`/orders/${id}/tracking`, { tracking_number });
+  return res.data;
+};
